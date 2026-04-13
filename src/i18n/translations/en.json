@@ -1,0 +1,49 @@
+{
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "search": "Search...",
+    "loading": "Loading...",
+    "noResults": "No results found",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit",
+    "actions": "Actions",
+    "status": "Status",
+    "name": "Name",
+    "description": "Description",
+    "date": "Date",
+    "error": "Error",
+    "success": "Success",
+    "warning": "Warning"
+  },
+  "auth": {
+    "login": "Login",
+    "logout": "Logout",
+    "username": "Username",
+    "password": "Password",
+    "signIn": "Sign In",
+    "signOut": "Sign Out",
+    "sessionExpired": "Your session has expired. Please log in again.",
+    "sessionTimeout": "Session Timeout Warning",
+    "sessionTimeoutMessage": "Your session will expire in {{minutes}} minutes due to inactivity.",
+    "stayLoggedIn": "Stay Logged In",
+    "notAuthorized": "You are not authorized to access this page.",
+    "forgotPassword": "Forgot Password?",
+    "resetPassword": "Reset Password",
+    "twoFactor": "Two-Factor Authentication",
+    "twoFactorCode": "Enter verification code"
+  },
+  "nav": {
+    "core": "Core",
+    "products": "Products",
+    "organization": "Organization",
+    "system": "System",
+    "accounting": "Accounting",
+    "reports": "Reports"
+  }
+}

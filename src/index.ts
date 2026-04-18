@@ -76,9 +76,8 @@ export type {
 } from './contracts/component-slots.types';
 export type { FormFieldRenderProps, FormFieldSlots } from '@zicenter/form-kit';
 
-// ── Auth ──
-export { useAuth } from './auth/auth-context';
-export type { CoreAuthUser, AuthAdapter, SessionStorage } from './auth/auth.types';
+// ── Permissions ──
+export { PermissionsProvider, usePermissions } from './providers/PermissionsProvider';
 
 // ── Search ──
 export type { SearchAdapter } from './search/search.types';

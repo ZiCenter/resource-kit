@@ -4,7 +4,6 @@ export default defineConfig({
   entry: {
     index: 'src/index.ts',
     'errors/index': 'src/errors/index.ts',
-    'auth/auth.types': 'src/auth/auth.types.ts',
     'i18n/provider': 'src/i18n/provider.tsx',
   },
   format: ['esm'],

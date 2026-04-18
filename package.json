@@ -13,10 +13,6 @@
       "types": "./dist/errors/index.d.ts",
       "import": "./dist/errors/index.js"
     },
-    "./auth-types": {
-      "types": "./dist/auth/auth.types.d.ts",
-      "import": "./dist/auth/auth.types.js"
-    },
     "./i18n/provider": {
       "types": "./dist/i18n/provider.d.ts",
       "import": "./dist/i18n/provider.js"

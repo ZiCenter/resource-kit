@@ -4,7 +4,6 @@ import type { CoreComponentSlots } from '../contracts/component-slots.types';
 import { FormFieldProvider, type FormFieldSlots } from '@zicenter/form-kit';
 import type { ResourceManifestEntry } from '../types/index';
 import type { NotificationAdapter } from './NotificationProvider';
-import type { AuthAdapter, SessionStorage } from '../auth/auth.types';
 import type { SearchAdapter } from '../search/search.types';
 import type { NavigationAdapter } from './NavigationProvider';
 
@@ -13,7 +12,7 @@ import { SlotProvider } from './SlotProvider';
 import { ManifestProvider } from './ManifestProvider';
 import { NotificationProvider } from './NotificationProvider';
 import { NavigationProvider } from './NavigationProvider';
-import { AuthProvider } from '../auth/auth-context';
+import { PermissionsProvider } from './PermissionsProvider';
 import { SearchProvider } from '../search/SearchProvider';
 import { UIProvider } from '../layouts/UIContext';
 
@@ -34,10 +33,6 @@ interface CoreProvidersConfig {
   slots: CoreComponentSlots;
   /** Concrete form field implementations matching FormFieldSlots */
   formFieldSlots: FormFieldSlots;
-  /** Authentication adapter (login, logout, session restore) */
-  auth: AuthAdapter;
-  /** Session persistence strategy. Consumers pick localStorage, cookies, memory, etc. */
-  sessionStorage: SessionStorage;
   /** Resource manifest for navigation metadata */
   manifest: Record<string, ResourceManifestEntry>;
   /** Navigation adapter — bridges the consumer's router to core-engine hooks */
@@ -51,12 +46,14 @@ interface CoreProvidersConfig {
   queryClient?: QueryClient;
   /** Optional search adapter. If omitted, SearchProvider is skipped. */
   search?: SearchAdapter;
+  /** Permissions for the current user. Defaults to [] if omitted. */
+  permissions?: string[];
 }
 
 /**
  * Convenience wrapper that nests all core-engine providers in the correct order.
  *
- * `slots`, `formFieldSlots`, `auth`, `manifest`, and `navigation` are required.
+ * `slots`, `formFieldSlots`, `manifest`, and `navigation` are required.
  * Everything else has sensible defaults that can be overridden.
  *
  * Provider ordering (outermost → innermost):
@@ -67,7 +64,7 @@ interface CoreProvidersConfig {
  * 5. ManifestProvider — Resource navigation metadata
  * 6. NavigationProvider — Router bridge (URL params + navigate-to-* callbacks)
  * 7. NotificationProvider — Toast/notification interface (defaults to console)
- * 8. AuthProvider — Authentication state
+ * 8. PermissionsProvider — Current user's permission strings
  * 9. SearchProvider — Search adapter (optional, only if `search` provided)
  *
  * Because `NavigationAdapter.useQueryParams` is a real React hook, this
@@ -96,9 +93,9 @@ export function CoreProviders({
   }
 
   inner = (
-    <AuthProvider adapter={config.auth} storage={config.sessionStorage}>
+    <PermissionsProvider permissions={config.permissions ?? []}>
       {inner}
-    </AuthProvider>
+    </PermissionsProvider>
   );
 
   inner = <NotificationProvider adapter={notification}>{inner}</NotificationProvider>;

@@ -67,6 +67,7 @@ export { SlotProvider, useSlots } from './providers/SlotProvider';
 export { useNotification } from './providers/NotificationProvider';
 export type { NotificationAdapter } from './providers/NotificationProvider';
 export { CoreProviders } from './providers/CoreProviders';
+export { ResourceProvider, useResourceDef } from './providers/ResourceProvider';
 
 // ── Contracts / Slots ──
 export type {

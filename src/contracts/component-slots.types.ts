@@ -10,14 +10,12 @@ import type { ComponentType } from 'react';
 import type { PaginationState } from '@tanstack/react-table';
 import type { StepperContract } from '@zicenter/form-kit';
 import type { ColumnDef, ActionDef } from '../types/index';
-import type { LoadedResource } from '../resource';
 
 export type { StepperContract };
 
 // ── Action Slots ──
 
 export interface ActionPanelProps {
-  def: LoadedResource;
   entity: any;
   actions: ActionDef[];
   selectedAction: ActionDef | null;
@@ -43,7 +41,6 @@ interface DataTableProps {
 }
 
 interface DetailHeaderProps {
-  def: LoadedResource;
   entity: any;
   onToggleActions: () => void;
   onDelete: () => void;
@@ -51,7 +48,6 @@ interface DetailHeaderProps {
 }
 
 interface TabContainerProps {
-  def: LoadedResource;
   entity: any;
 }
 

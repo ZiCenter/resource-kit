@@ -1,13 +1,10 @@
 import { useMemo } from 'react';
 import { usePermission } from './usePermission';
-import type { LoadedResource } from '../resource';
+import { useResourceDef } from '../providers/ResourceProvider';
 import type { ActionDef } from '../types/display.types';
 
-/**
- * Filters actions by visibility + permissions and synthesizes a delete action
- * if the resource has a delete resolver.
- */
-export function useVisibleActions(def: LoadedResource, entity: any) {
+export function useVisibleActions(entity: any) {
+  const def = useResourceDef();
   const { has } = usePermission();
 
   const actions = useMemo(() => {

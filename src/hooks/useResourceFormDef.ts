@@ -2,13 +2,10 @@ import { useMemo } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { coerceQueryParams, type FormStep } from '@zicenter/form-kit';
 import { useNavigation } from '../providers/NavigationProvider';
-import type { LoadedResource } from '../resource';
+import { useResourceDef } from '../providers/ResourceProvider';
 
-/**
- * Normalizes a resource's form definition into a consistent steps structure.
- * Handles create vs edit mode, single-field → step conversion, and query param defaults.
- */
-export function useResourceFormDef(def: LoadedResource, mode: 'create' | 'edit') {
+export function useResourceFormDef(mode: 'create' | 'edit') {
+  const def = useResourceDef();
   const queryClient = useQueryClient();
   const { useQueryParams } = useNavigation();
   const [searchParams] = useQueryParams();

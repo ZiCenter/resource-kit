@@ -1,13 +1,11 @@
 import { useMemo, useCallback } from 'react';
 import { usePermission } from './usePermission';
 import { useNavigation } from '../providers/NavigationProvider';
-import type { LoadedResource } from '../resource';
+import { useResourceDef } from '../providers/ResourceProvider';
 import type { TabDef } from '../types/display.types';
 
-/**
- * Filters tabs by visibility + permissions and manages URL-based active tab state.
- */
-export function useVisibleTabs(def: LoadedResource, entity: any) {
+export function useVisibleTabs(entity: any) {
+  const def = useResourceDef();
   const { has } = usePermission();
   const { useQueryParams } = useNavigation();
   const [searchParams, setSearchParams] = useQueryParams();

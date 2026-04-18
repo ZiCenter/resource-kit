@@ -1,8 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '../api/query-keys';
-import type { LoadedResource, ConfirmActionDef, FormActionDef } from '../types/index';
+import { useResourceDef } from '../providers/ResourceProvider';
+import type { ConfirmActionDef, FormActionDef } from '../types/index';
 
-export function useResourceAction(def: LoadedResource, action: ConfirmActionDef | FormActionDef) {
+export function useResourceAction(action: ConfirmActionDef | FormActionDef) {
+  const def = useResourceDef();
   const queryClient = useQueryClient();
 
   return useMutation({

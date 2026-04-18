@@ -1,11 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { queryKeys } from '../api/query-keys';
-import type { LoadedResource } from '../types/index';
+import { useResourceDef } from '../providers/ResourceProvider';
 
-export function useResource(def: LoadedResource, id: string) {
+export function useResource(id: string) {
+  const def = useResourceDef();
   return useQuery({
-    queryKey: def ? queryKeys.resourceDetail(def.resolvers.queryKey, id) : ['__invalid__'],
+    queryKey: queryKeys.resourceDetail(def.resolvers.queryKey, id),
     queryFn: () => def.resolvers.get(id),
-    enabled: !!def && !!id,
+    enabled: !!id,
   });
 }

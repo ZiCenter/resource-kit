@@ -2,8 +2,9 @@ import { useResourceAction } from './useResourceAction';
 import { useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '../api/query-keys';
 import { useNotification } from '../providers/NotificationProvider';
+import { useResourceDef } from '../providers/ResourceProvider';
 import { AppError } from '../errors/errors';
-import type { LoadedResource, ConfirmActionDef, FormActionDef } from '../types/index';
+import type { ConfirmActionDef, FormActionDef } from '../types/index';
 
 interface UseActionExecutionOptions {
   onSuccess?: () => void;
@@ -12,12 +13,12 @@ interface UseActionExecutionOptions {
 }
 
 export function useActionExecution(
-  def: LoadedResource,
   action: ConfirmActionDef | FormActionDef,
   entity: any,
   options: UseActionExecutionOptions = {},
 ) {
-  const mutation = useResourceAction(def, action);
+  const def = useResourceDef();
+  const mutation = useResourceAction(action);
   const queryClient = useQueryClient();
   const notification = useNotification();
 

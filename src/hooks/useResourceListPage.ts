@@ -2,12 +2,10 @@ import { useState } from 'react';
 import type { PaginationState } from '@tanstack/react-table';
 import { useResourceList } from './useResourceList';
 import { usePermission } from './usePermission';
-import type { LoadedResource } from '../resource';
+import { useResourceDef } from '../providers/ResourceProvider';
 
-/**
- * Wraps useResourceList with pagination state management and permission checks.
- */
-export function useResourceListPage(def: LoadedResource) {
+export function useResourceListPage() {
+  const def = useResourceDef();
   const { has } = usePermission();
 
   const [pagination, setPagination] = useState<PaginationState>({
@@ -20,7 +18,7 @@ export function useResourceListPage(def: LoadedResource) {
     limit: pagination.pageSize,
   };
 
-  const { data, isLoading, error } = useResourceList(def, listParams);
+  const { data, isLoading, error } = useResourceList(listParams);
 
   const canCreate = !!def.createForm && (!def.permissions?.create || has(def.permissions.create));
 

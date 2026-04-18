@@ -1,8 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '../api/query-keys';
-import type { LoadedResource } from '../types/index';
+import { useResourceDef } from '../providers/ResourceProvider';
 
-export function useResourceCreate(def: LoadedResource) {
+export function useResourceCreate() {
+  const def = useResourceDef();
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -16,7 +17,8 @@ export function useResourceCreate(def: LoadedResource) {
   });
 }
 
-export function useResourceUpdate(def: LoadedResource) {
+export function useResourceUpdate() {
+  const def = useResourceDef();
   const queryClient = useQueryClient();
 
   return useMutation({

@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { CoreComponentSlots } from '../contracts/component-slots.types';
 import { FormFieldProvider, type FormFieldSlots } from '@zicenter/form-kit';
 import type { ResourceManifestEntry } from '../types/index';
+import type { LoadedResource } from '../resource';
 import type { NotificationAdapter } from './NotificationProvider';
 import type { SearchAdapter } from '../search/search.types';
 import type { NavigationAdapter } from './NavigationProvider';
@@ -13,6 +14,7 @@ import { ManifestProvider } from './ManifestProvider';
 import { NotificationProvider } from './NotificationProvider';
 import { NavigationProvider } from './NavigationProvider';
 import { PermissionsProvider } from './PermissionsProvider';
+import { ResourceLoaderContext } from './ResourceProvider';
 import { SearchProvider } from '../search/SearchProvider';
 import { UIProvider } from '../layouts/UIContext';
 
@@ -37,6 +39,8 @@ interface CoreProvidersConfig {
   manifest: Record<string, ResourceManifestEntry>;
   /** Navigation adapter — bridges the consumer's router to core-engine hooks */
   navigation: NavigationAdapter;
+  /** Resolves a resource definition by its ID — used by ResourceProvider */
+  loadResource: (resourceId: string) => Promise<LoadedResource>;
 
   // ── Optional (have sensible defaults) ──
 
@@ -58,14 +62,15 @@ interface CoreProvidersConfig {
  *
  * Provider ordering (outermost → innermost):
  * 1. QueryClientProvider — TanStack Query cache
- * 2. UIProvider — Global UI state (command palette, search dialog, active module)
- * 3. SlotProvider — UI component implementations
- * 4. FormFieldProvider — Form field slot implementations
- * 5. ManifestProvider — Resource navigation metadata
- * 6. NavigationProvider — Router bridge (URL params + navigate-to-* callbacks)
- * 7. NotificationProvider — Toast/notification interface (defaults to console)
- * 8. PermissionsProvider — Current user's permission strings
- * 9. SearchProvider — Search adapter (optional, only if `search` provided)
+ * 2. ResourceLoaderContext — loadResource function for ResourceProvider
+ * 3. UIProvider — Global UI state (command palette, search dialog, active module)
+ * 4. SlotProvider — UI component implementations
+ * 5. FormFieldProvider — Form field slot implementations
+ * 6. ManifestProvider — Resource navigation metadata
+ * 7. NavigationProvider — Router bridge (URL params + navigate-to-* callbacks)
+ * 8. NotificationProvider — Toast/notification interface (defaults to console)
+ * 9. PermissionsProvider — Current user's permission strings
+ * 10. SearchProvider — Search adapter (optional, only if `search` provided)
  *
  * Because `NavigationAdapter.useQueryParams` is a real React hook, this
  * component must be mounted **inside** the consumer's router context.
@@ -113,6 +118,12 @@ export function CoreProviders({
   inner = <SlotProvider slots={config.slots}>{inner}</SlotProvider>;
 
   inner = <UIProvider>{inner}</UIProvider>;
+
+  inner = (
+    <ResourceLoaderContext.Provider value={config.loadResource}>
+      {inner}
+    </ResourceLoaderContext.Provider>
+  );
 
   inner = <QueryClientProvider client={qc}>{inner}</QueryClientProvider>;
 

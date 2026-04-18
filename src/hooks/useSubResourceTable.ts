@@ -2,15 +2,12 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient, keepPreviousData } from '@tanstack/react-query';
 import type { PaginationState } from '@tanstack/react-table';
 import { queryKeys } from '../api/query-keys';
-import type { LoadedResource } from '../resource';
+import { useResourceDef } from '../providers/ResourceProvider';
 import type { TableTabDef } from '../types/display.types';
 import type { NormalizedList } from '../types/resolver.types';
 
-/**
- * Manages sub-resource table data: query, pagination, delete mutation,
- * and auto-injects a delete column if the tab resolver supports it.
- */
-export function useSubResourceTable(def: LoadedResource, entity: any, tab: TableTabDef<any>) {
+export function useSubResourceTable(entity: any, tab: TableTabDef<any>) {
+  const def = useResourceDef();
   const queryClient = useQueryClient();
   const entityId = def.getId(entity);
 
@@ -40,7 +37,6 @@ export function useSubResourceTable(def: LoadedResource, entity: any, tab: Table
     onSuccess: () => queryClient.invalidateQueries({ queryKey: subQueryKey }),
   });
 
-  // Auto-detect paginated response
   const isPaginated = data != null && !Array.isArray(data) && 'totalCount' in data;
   const tableData = isPaginated ? (data as NormalizedList).data : Array.isArray(data) ? data : [];
   const totalCount = isPaginated ? (data as NormalizedList).totalCount : tableData.length;

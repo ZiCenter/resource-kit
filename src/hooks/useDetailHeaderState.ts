@@ -1,12 +1,9 @@
 import { useMemo } from 'react';
 import { usePermission } from './usePermission';
-import type { LoadedResource } from '../resource';
+import { useResourceDef } from '../providers/ResourceProvider';
 
-/**
- * Computes detail header display state from a resource definition and entity.
- * Extracts title, subtitle, status, image and resolves edit/delete permissions.
- */
-export function useDetailHeaderState(def: LoadedResource, entity: any) {
+export function useDetailHeaderState(entity: any) {
+  const def = useResourceDef();
   const { has } = usePermission();
 
   return useMemo(() => {

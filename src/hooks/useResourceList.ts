@@ -1,16 +1,17 @@
 import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import { queryKeys } from '../api/query-keys';
-import type { LoadedResource, ListParams } from '../types/index';
+import type { ListParams } from '../types/index';
+import { useResourceDef } from '../providers/ResourceProvider';
 
 interface UseResourceListParams extends ListParams {
   search?: string;
 }
 
-export function useResourceList(def: LoadedResource, params?: UseResourceListParams) {
+export function useResourceList(params?: UseResourceListParams) {
+  const def = useResourceDef();
   return useQuery({
-    queryKey: def ? queryKeys.resourceList(def.resolvers.queryKey, params) : ['__invalid__'],
+    queryKey: queryKeys.resourceList(def.resolvers.queryKey, params),
     queryFn: () => def.resolvers.list(params),
-    enabled: !!def,
     placeholderData: keepPreviousData,
   });
 }
